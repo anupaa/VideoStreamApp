@@ -48,6 +48,7 @@ userSchema.pre("save", async function (next) {
   this.password = bcrypt.hash(this.password, 10);
   next();
 });
+// using pre middleware we are executing encrypt ops before saving the db changes
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
