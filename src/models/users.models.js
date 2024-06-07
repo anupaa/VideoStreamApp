@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-
+const { Schema } = mongoose;
 const userSchema = new mongoose.Schema(
   {
     watchHistory: {
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
     },
-    fullname: {
+    fullName: {
       type: String,
       required: true,
       lowercase: true,
@@ -65,15 +65,15 @@ userSchema.methods.generateAccessToken = function () {
     },
   );
 };
-userSchema.methods.refreshAccessToken = finction () {
+userSchema.methods.refreshAccessToken = function () {
   return jsonwebtoken.sign(
     {
       _id: this._id,
     },
     process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-      },
-  )
-}
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+    },
+  );
+};
 export const Users = mongoose.model("Users", userSchema);
